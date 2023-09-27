@@ -13,11 +13,19 @@ class Student(object):
         self.score = score
 
     def print_score(self):
-        print('%s: %s' % (self.name, self.score))
+        print('1')
+        print('%s的分数是: %s' % (self.name, self.score))
+        print('2')
+        return 123
 
 
-shawn = Student('shawn.zhao', 80)
-joyce = Student('joyce.zhao', 100)
+if __name__ == '__main__':
+    shawn = Student('shawn.zhao', 80)
+    joyce = Student('joyce.zhao', 100)
+    # shawn.print_score()
+    # joyce.print_score()
+    print(shawn.print_score())
+    print('3')
+    print(joyce.print_score())
+    # print(shawn)
 
-print(shawn.print_score())
-print(joyce.print_score())
