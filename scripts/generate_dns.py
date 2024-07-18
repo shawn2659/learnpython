@@ -8,7 +8,7 @@
 
 from scapy.all import *
 
-# 构建DNS查询
+# 构建请求类型typeid为0的DNS查询
 dns_request = IP(dst="192.168.17.53")/UDP(dport=53)/DNS(rd=1, qd=DNSQR(qname="example.com", qtype=0))
 
 # 发送DNS查询并接收响应
