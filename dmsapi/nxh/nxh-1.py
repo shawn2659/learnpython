@@ -4,7 +4,9 @@
 # @Date    : 2024-03-18
 import random
 import time
+
 import requests
+
 import base64
 from Crypto.Cipher import AES
 import hashlib
@@ -118,7 +120,7 @@ payload = '''<?xml version="1.0" ?>
                 <soapenv:Header/>
                 <soapenv:Body>
                     <web:dns_command>
-                        <web:dnsId>2022010603053500001</web:dnsId>
+                        <web:dnsId>1111</web:dnsId>
                         <web:randVal>1234567890abcDEF</web:randVal>
                         <web:pwdHash>{}</web:pwdHash>
                         <web:command>{}</web:command>
@@ -135,8 +137,9 @@ payload = '''<?xml version="1.0" ?>
 
 head = {'Content-Type': 'text/xml;charset=UTF-8', 'SOAPAction': "urn:dns_command"}
 
-start = 9151314442816847873
+start = 9151314442816847872
 end = 9223372036854775807
+
 commandId = random.randrange(start, end)
 
 
@@ -147,22 +150,22 @@ def data_21(url):
     :return:
     """
     data = '''<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>
-                <localtldserviceswitch>    
+                <ednsDomainCommand>    
                     <commandId>{}</commandId>    
-                    <type>0</type>    
+                    <type>1</type>    
                     <domainType>1</domainType>    
-                    <domain>hjkl024.com</domain>  
+                    <domain>api1.yamutest.com</domain>  
                     <urgency>1</urgency>    
                     <time>        
-                        <effectTime>2024-04-28 16:01:31</effectTime>        
-                        <expiredTime>2024-06-29 23:59:59</expiredTime>    
+                        <effectTime>2024-06-27 00:00:00</effectTime>        
+                        <expiredTime>2024-09-27 23:00:00</expiredTime>    
                     </time>    
                     <range>        
-                        <dnsId>2023060831954400001</dnsId>        
-                        <effectiveScope>440000</effectiveScope>
+                        <dnsId>1111</dnsId>        
+                        <effectiveScope>1</effectiveScope>
                     </range>    
                     <timeStamp>{}</timeStamp>
-                </localtldserviceswitch>'''.format(commandId, timeStamp)
+                </ednsDomainCommand>'''.format(commandId, timeStamp)
     ranVal = '1234567890abcDEF'
     pwdHash = md5_encrypt('1234567890abcDEF' + '1234567890abcDEF')
     command = aes_encrypt(data.encode())
@@ -178,23 +181,23 @@ def data_22(url):
     :return:
     """
     data = '''<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>
-                <localtldserviceswitch>    
+                <viewCommand>    
                     <commandId>{}</commandId>    
-                    <type>0</type>    
-                    <code>1</code>
-                    <ipv4></ipv4>
-                    <ipv6></ipv6>
+                    <type>1</type>    
+                    <code>330105</code>
+                    <ipv4>33.1.5.0/30</ipv4>
+                    <ipv6>33:1:5::/125</ipv6>
                     <urgency>1</urgency>    
                     <time>        
-                        <effectTime>2024-04-28 16:01:31</effectTime>        
-                        <expiredTime>2024-06-29 23:59:59</expiredTime>    
+                        <effectTime>2024-07-17 00:00:31</effectTime>        
+                        <expiredTime>2024-07-30 23:16:59</expiredTime>    
                     </time>    
                     <range>        
-                        <dnsId>2023060831954400001</dnsId>        
-                        <effectiveScope>440000</effectiveScope>
+                        <dnsId>1111</dnsId>        
+                        <effectiveScope>1</effectiveScope>
                     </range>    
                     <timeStamp>{}</timeStamp>
-                </localtldserviceswitch>'''.format(commandId, timeStamp)
+                </viewCommand>'''.format(commandId, timeStamp)
     ranVal = '1234567890abcDEF'
     pwdHash = md5_encrypt('1234567890abcDEF' + '1234567890abcDEF')
     command = aes_encrypt(data.encode())
@@ -210,23 +213,22 @@ def data_23(url):
     :return:
     """
     data = '''<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>
-                <localtldserviceswitch>    
+                <WeightDomainCommand>    
                     <commandId>{}</commandId>    
-                    <type>0</type>    
+                    <type>2</type>    
                     <domainType>1</domainType>    
-                    <domain>hjkl024.com</domain> 
+                    <domain>wapi1.yamutest.com</domain> 
                     <urgency>1</urgency>    
                     <time>        
-                        <effectTime>2024-04-28 16:01:31</effectTime>        
+                        <effectTime>2024-06-26 00:01:31</effectTime>        
                         <expiredTime>2024-06-29 23:59:59</expiredTime>    
                     </time>    
                     <range>        
-                        <dnsId>2023060831954400001</dnsId>        
-                        <effectiveScope>440000</effectiveScope>        
-                        <serverId>123</serverId>    
+                        <dnsId>1111</dnsId>        
+                        <effectiveScope>1</effectiveScope>   
                     </range>    
                     <timeStamp>{}</timeStamp>
-                </localtldserviceswitch>'''.format(commandId, timeStamp)
+                </WeightDomainCommand>'''.format(commandId, timeStamp)
     ranVal = '1234567890abcDEF'
     pwdHash = md5_encrypt('1234567890abcDEF' + '1234567890abcDEF')
     command = aes_encrypt(data.encode())
@@ -235,80 +237,6 @@ def data_23(url):
     return req.content.decode()
 
 
-def data_24(url):
-    """
-    内循环指向切换指令
-    :param url:
-    :return:
-    type: 0——向本地索引库查询 1——向互联网递归查询
-    isalltld: 0——所有顶级域全部切换；1——指定顶级域/域切换
-    clearCache: 0——不清空缓存，顶级域切换不清空缓存; 1——清空缓存，涉及二级及以下域名指向切换时，清空域列表/ domainlist缓存
-    serverId: 生效节点
-    """
-    data = '''<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>
-                <localtldserviceswitch>    
-                    <commandId>{}</commandId>    
-                    <type>0</type>    
-                    <isalltld>0</isalltld>    
-                    <domainlist>eeee</domainlist>    
-                    <clearCache>1</clearCache>    
-                    <urgency>1</urgency>    
-                    <time>        
-                        <effectTime>2024-04-28 16:01:31</effectTime>        
-                        <expiredTime>2024-06-29 23:59:59</expiredTime>    
-                    </time>    
-                    <range>        
-                        <dnsId>2023060831954400001</dnsId>        
-                        <effectiveScope>440000</effectiveScope>        
-                        <serverId>1</serverId>    
-                    </range>    
-                    <timeStamp>{}</timeStamp>
-                </localtldserviceswitch>'''.format(commandId, timeStamp)
-    ranVal = '1234567890abcDEF'
-    pwdHash = md5_encrypt('1234567890abcDEF' + '1234567890abcDEF')
-    command = aes_encrypt(data.encode())
-    commandHash = md5_encrypt(data + ranVal)
-    req = requests.post(url=url, data=payload.format(pwdHash, command, commandHash, '24'), headers=head, verify=False)
-    return req.content.decode()
-
-
-def data_25(url):
-    """
-    内循环索引数据同步指令
-    :param url:
-    :return:
-    """
-    data = '''<?xml version="1.0" encoding="UTF-8"?>
-        <localtldrecordsync>
-            <commandId>{}</commandId>
-            <updateType>1</updateType>
-            <domainInfo>
-                <domain>b.com</domain>
-                <record>b.013.com 86400 IN NS 013.com</record>
-                <record>b.016.com 86400 IN A b7.com</record>
-                <record>b.017.com 86400 IN A 162.105.207.191</record>
-            </domainInfo>
-            <domainInfo>
-                <domain>a.com</domain>
-                <record>a.016.com 86400 IN A b7.com</record>
-                <record>a.017.com 86400 IN A 162.105.207.191</record>
-                <record>a.013.com 86400 IN NS b4.com</record>
-            </domainInfo>
-            <range>
-                <dnsId>2022010603053500001</dnsId>
-                <effectiveScope>1</effectiveScope>
-                <serverId>1</serverId>
-            </range>
-            <timeStamp>{}</timeStamp>
-        </localtldrecordsync>'''.format(commandId, timeStamp)
-    ranVal = '1234567890abcDEF'
-    pwdHash = md5_encrypt('1234567890abcDEF' + '1234567890abcDEF')
-    command = aes_encrypt(data.encode())
-    commandHash = md5_encrypt(data + ranVal)
-    req = requests.post(url=url, data=payload.format(pwdHash, command, commandHash, '25'), headers=head, verify=False)
-    return req.content.decode()
-
-
-config_url = 'http://192.168.17.43:8081/cmccYyzb/localtld/command'
+config_url = 'https://192.168.18.209:8081/cmccYyzb/command'
 
 print(data_22(config_url))
