@@ -4,9 +4,7 @@
 # @Date    : 2024-03-18
 import random
 import time
-
 import requests
-
 import base64
 from Crypto.Cipher import AES
 import hashlib
@@ -311,6 +309,6 @@ def data_25(url):
     return req.content.decode()
 
 
-config_url = 'http://192.168.24.46:8081/cmccYyzb/localtld/command'
+config_url = 'http://192.168.17.43:8081/cmccYyzb/localtld/command'
 
-print(data_24(config_url))
+print(data_22(config_url))
