@@ -4,9 +4,7 @@
 # @Date    : 2024-03-18
 import random
 import time
-
 import requests
-
 import base64
 from Crypto.Cipher import AES
 import hashlib
@@ -184,9 +182,9 @@ def data_22(url):
                 <viewCommand>    
                     <commandId>{}</commandId>    
                     <type>1</type>    
-                    <code>330105</code>
-                    <ipv4>33.1.5.0/30</ipv4>
-                    <ipv6>33:1:5::/125</ipv6>
+                    <code>350100</code>
+                    <ipv4>35.1.5.0/30</ipv4>
+                    <ipv6>35:1:5::/125</ipv6>
                     <urgency>1</urgency>    
                     <time>        
                         <effectTime>2024-07-17 00:00:31</effectTime>        
@@ -237,6 +235,6 @@ def data_23(url):
     return req.content.decode()
 
 
-config_url = 'https://192.168.18.209:8081/cmccYyzb/command'
+config_url = 'https://192.168.17.43:8081/cmccYyzb/command'
 
 print(data_22(config_url))
